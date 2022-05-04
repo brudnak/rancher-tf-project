@@ -14,16 +14,16 @@ provider "rancher2" {
 }
 
 data "rancher2_user" "foo" {
-  count    = 500
+  count    = 1000
   username = "tuser${count.index}"
 }
 
 
 resource "rancher2_project_role_template_binding" "foo" {
-  count            = 500
-  name             = "foo"
-  project_id       = "p-r5ctd"
-  role_template_id = "cluster-member"
+  count            = 1000
+  name             = "foo${count.index}"
+  project_id       = "local:${var.project_id}"
+  role_template_id = "project-member"
   user_id          = data.rancher2_user.foo[count.index].id
 }
 
@@ -47,3 +47,4 @@ variable "rancher_token_key" {
   sensitive   = true
 }
 
+variable "project_id" {}
